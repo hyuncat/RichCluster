@@ -81,4 +81,4 @@ double LinkageMethod::average(const Cluster& cluster1, const Cluster& cluster2) 
 
 double LinkageMethod::ward(const Cluster& cluster1, const Cluster& cluster2) {
   return LinkageMethod::average(cluster1, cluster2); // non-implemented for now
-} 
+}

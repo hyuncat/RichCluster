@@ -27,8 +27,39 @@ load_cluster_data <- function(from_scratch=FALSE)
 
 cluster_result <- load_cluster_data(from_scratch=TRUE)
 
+# WARD LINKAGE TEST
+# ---
+ward_cluster_result <- richCluster::cluster(
+  cluster_result$df_list, df_names=cluster_result$df_names, min_terms=3, min_value=0.0001,
+  distance_metric="kappa", distance_cutoff=0.5,
+  linkage_method="ward", linkage_cutoff=0.5
+)
+print("Ward linkage clustering successful:")
+print(head(ward_cluster_result$final_clusters))
+
+# DAVID CLUSTER TEST
+# ---
+david_cluster_result <- richCluster::david_cluster(
+  cluster_result$df_list, df_names=cluster_result$df_names
+)
+print("David clustering successful:")
+print(head(david_cluster_result$final_clusters))
+
 # ALL VISUALIZATION TESTS
 # ---
+plot_network_graph(
+  cluster_result,
+  cluster_num = 1,
+  distance_matrix = cluster_result$distance_matrix,
+  valuetype_list = c("Pvalue_1", "Padj_1")
+)
+
+compare_network_graphs_plotly(
+  cluster_result,
+  cluster_num = 1,
+  pval_names = c("Pvalue_1", "Padj_1")
+)
+
 c_hmap <- richCluster::cluster_hmap(cluster_result)
 c_hmap
 

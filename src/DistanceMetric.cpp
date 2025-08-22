@@ -3,6 +3,7 @@
 //  richCluster
 //
 //  Created by Sarah on 6/2/25.
+//  edited by Junguk Hur on 8/22/2025
 //
 
 #include <stdio.h>
@@ -10,6 +11,8 @@
 #include <unordered_set>
 #include <string>
 #include <stdexcept>
+#include <algorithm>  // for std::set_intersection
+#include <iterator>   // for std::inserter
 
 double DistanceMetric::computeDistance(const std::unordered_set<std::string>& t1_genes,
                                        const std::unordered_set<std::string>& t2_genes,

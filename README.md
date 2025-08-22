@@ -6,11 +6,11 @@ Terms are clustered together based on how many genes are shared between them. We
 - Jaccard index
 
 As well as different linkage criteria for iteratively merging clusters together.
-- ~~Multiple linkage (from DAVID implementation)~~ (not yet implemented)
+- Multiple linkage (from DAVID implementation)
 - Single
 - Complete
 - Average
-- ~~Ward~~ (not yet implemented)
+- Ward
 
 ## Installation
 The package is currently under review in submission to CRAN, but for now users can install the package and try out the clustering and visualization features by installing through GitHub.
@@ -62,11 +62,10 @@ After an initial grouping of terms based on having a distance score above a cert
 The default recommended should be `average`, which takes the average distance between all terms in the two clusters and uses that as the metric to merge.
 
 The total list of supported metrics includes: 
-- ~~`"david"` - DAVID multiple linkage membership~~ (not yet implemented)
 - `"single"`
 - `"complete"`
 - `"average"`
-- ~~`"ward"` (recommended)~~ (not yet implemented)
+- `"ward"` (recommended)
 
 Again, a higher linkage_cutoff leads to stricter (smaller) clusters.
 
@@ -74,6 +73,27 @@ Again, a higher linkage_cutoff leads to stricter (smaller) clusters.
 The output of the `cluster()` function is a `ClusterResult` which can be directly inputted into the visualizations or exported as a csv file with some additional options.
 
 The name of each cluster is determined as the term in the cluster with the highest gene count.
+
+### DAVID-style Clustering
+For users who prefer a clustering method similar to the one used by the DAVID functional annotation tool, we provide the `david_cluster()` function. This function implements a clustering algorithm inspired by DAVID's method, which involves creating initial seeds and iteratively merging them.
+
+Key parameters for `david_cluster()`:
+- `similarity_threshold`: The kappa score cutoff for considering two terms similar.
+- `initial_group_membership`: The minimum number of similar terms required to form an initial seed group.
+- `final_group_membership`: The minimum number of terms required in a final cluster.
+- `multiple_linkage_threshold`: The threshold for the Dice similarity coefficient used to merge seeds.
+
+Example usage:
+```r
+david_result <- richCluster::david_cluster(
+  enrichment_results,
+  df_names = rr_names,
+  similarity_threshold = 0.5,
+  initial_group_membership = 3,
+  final_group_membership = 3,
+  multiple_linkage_threshold = 0.5
+)
+```
 
 ## Visualizations
 We support two broad categories of cluster visualization:
@@ -88,6 +108,15 @@ Using these two categories, we have three different types of plots which are cur
 3. Dot plots
 
 As well as an option to export as a dataframe (CSV).
+
+### Network Graphs
+`plot_network_graph` visualizes a single cluster as a network graph, where nodes are terms and edges represent the similarity between them. Node colors can represent p-values from multiple datasets.
+
+<img src="https://i.imgur.com/example.png" width="500" height="auto">
+
+`compare_network_graphs_plotly` provides an interactive, side-by-side comparison of network graphs for a single cluster using different p-value types.
+
+<img src="https://i.imgur.com/example.png" width="500" height="auto">
 
 ### Heatmaps
 `cluster_hmap` displays the -log10(pvalue) of all the different clusters across the user's supplied enrichment results.

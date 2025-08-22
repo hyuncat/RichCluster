@@ -9,7 +9,6 @@
 #include "DistanceMatrix.h"
 #include <Rcpp.h>
 
-
 int DistanceMatrix::getDistanceIndex(int t1, int t2) const {
   int row_index = t1;
   int col_index = t2;

@@ -24,7 +24,8 @@ Imports:
     heatmaply,
     iheatmapr,
     igraph,
-    networkD3
+    networkD3,
+    fields
 VignetteBuilder: knitr
 Suggests: 
     devtools,
